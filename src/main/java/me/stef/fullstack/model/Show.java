@@ -9,7 +9,7 @@ import java.time.Instant;
 public class Show {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "name")
@@ -20,6 +20,14 @@ public class Show {
 
     @Column(name = "dt")
     private Instant date;
+
+    public Show() {
+    }
+
+    public Show(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
     public Integer getId() {
         return id;

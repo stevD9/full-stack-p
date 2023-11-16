@@ -6,7 +6,7 @@ $(document).ready(function() {
 
         for (let i = 0; i < response.length; i++) {
                $('<h3>').addClass('name').text("Name: " + response[i].name).appendTo($card);
-               $('<p>').addClass('descr').text(response[i].description).appendTo($card);
+               $('<p>').addClass('descr').text("Description: " + response[i].description).appendTo($card);
         }
     });
 });

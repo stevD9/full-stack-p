@@ -1,6 +1,7 @@
 package me.stef.fullstack.service;
 
 import me.stef.fullstack.dao.ShowRepository;
+import me.stef.fullstack.dto.RegisterShowDTO;
 import me.stef.fullstack.dto.ShowDTO;
 import me.stef.fullstack.model.Show;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,18 @@ public class ShowService {
                 .collect(Collectors.toList());
     }
 
+    public ShowDTO saveShow(RegisterShowDTO request) {
+        Show show = map(request);
+        repository.save(show);
+
+        return map(show);
+    }
+
     private ShowDTO map(Show in) {
         return new ShowDTO(in.getId(), in.getName(), in.getDescription(), in.getDate());
+    }
+
+    private Show map(RegisterShowDTO in) {
+        return new Show(in.getName(), in.getDescription());
     }
 }
