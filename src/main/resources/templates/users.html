@@ -10,6 +10,10 @@
 </head>
 <body>
 <h1>THE UZAAAAZZZZZZZ</h1>
-<script src="users.js"></script>
+<div th:each="u : ${users}">
+<h3 th:text="'ID: ' + ${u.id}"/>
+<p th:text="'Name: ' + ${u.firstName} + ' ' + ${u.lastName}"/>
+<p th:text="'Email: ' + ${u.email}"/>
+</div>
 </body>
 </html>
