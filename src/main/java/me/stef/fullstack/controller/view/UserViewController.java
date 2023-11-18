@@ -15,7 +15,7 @@ public class UserViewController {
 
     @GetMapping("/users")
     public String getUsers(@RequestHeader("Host") String host, Model model) {
-        System.out.println("HOST HEADER : " + host); //test thymeleaf with headers (AUTH????)
+//        System.out.println("HOST HEADER : " + host); //test thymeleaf with headers (AUTH????)
         model.addAttribute("users", service.getUsers());
         return "users";
     }

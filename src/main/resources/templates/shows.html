@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Shows</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<!--    <link rel="stylesheet" href="style.css">-->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <h1>THE SHOWSSSSSSSS</h1>
-<div th:each="s : ${shows}">
-    <h3 th:text="${s.name}"/>
-    <p th:text="${s.description}"/>
+<div th:each="show : ${stef}">
+    <h3 style="color:red" th:text="${show.name}"/>
+    <p th:text="${show.description}"/>
 </div>
 </body>
 </html>

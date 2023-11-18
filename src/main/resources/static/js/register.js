@@ -19,8 +19,8 @@ $(document).ready(function() {
             data: req,
             contentType:"application/json; charset=utf-8",
             dataType:"json",
-            success: function(){
-                alert("YEH YOU CUNT");
+            success: function(response) {
+                alert("YEH YOU CUNT : " + response.firstName);
             }});
     });
 });
