@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ShowService {
@@ -20,7 +19,7 @@ public class ShowService {
         return repository.findAll()
                 .stream()
                 .map(this::map)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public ShowDTO saveShow(RegisterShowDTO request) {
