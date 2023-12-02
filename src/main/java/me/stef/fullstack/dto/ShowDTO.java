@@ -1,38 +1,46 @@
 package me.stef.fullstack.dto;
 
-import java.time.Instant;
+import java.util.List;
 
 public class ShowDTO {
 
-    private Integer id;
-    private String name;
+    private Long id;
+    private String title;
     private String description;
-    private Instant date;
+    private String duration;
+    private String director;
+    private String genre;
+    private String language;
+    private List<UserDTO> likes;
+    private List<ScreeningDTO> screenings;
 
     public ShowDTO() {
     }
 
-    public ShowDTO(Integer id, String name, String description, Instant date) {
+    public ShowDTO(Long id, String title, String description, String duration, String director, String genre, String language) {
         this.id = id;
-        this.name = name;
+        this.title = title;
         this.description = description;
-        this.date = date;
+        this.duration = duration;
+        this.director = director;
+        this.genre = genre;
+        this.language = language;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -43,11 +51,51 @@ public class ShowDTO {
         this.description = description;
     }
 
-    public Instant getDate() {
-        return date;
+    public String getDuration() {
+        return duration;
     }
 
-    public void setDate(Instant date) {
-        this.date = date;
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public List<UserDTO> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<UserDTO> likes) {
+        this.likes = likes;
+    }
+
+    public List<ScreeningDTO> getScreenings() {
+        return screenings;
+    }
+
+    public void setScreenings(List<ScreeningDTO> screenings) {
+        this.screenings = screenings;
     }
 }

@@ -3,7 +3,7 @@ package me.stef.fullstack.service;
 import me.stef.fullstack.dao.ShowRepository;
 import me.stef.fullstack.dto.RegisterShowDTO;
 import me.stef.fullstack.dto.ShowDTO;
-import me.stef.fullstack.dto.UpdateShowDTO;
+import me.stef.fullstack.mapper.MyMapper;
 import me.stef.fullstack.model.Show;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class ShowService {
 //                .toList();
     }
 
-    public ShowDTO getById(Integer id) {
+    public ShowDTO getById(Long id) {
         Optional<Show> show = repository.findById(id);
         if (show.isPresent()) {
             Show s = show.get();
@@ -51,51 +51,53 @@ public class ShowService {
     }
 
     public ShowDTO saveShow(RegisterShowDTO request) {
-        Show show = map(request);
+        Show show = MyMapper.toShow(request);
         repository.save(show);
 
         return map(show);
     }
 
-    public ShowDTO updateShow(Integer id, UpdateShowDTO request) {
-        Optional<Show> show = repository.findById(id);
-
-        if (show.isPresent()) {
-            merge(show.get(), request);
-            repository.save(show.get());
-
-            return map(show.get());
-        } else {
-            throw new RuntimeException("NOT FOUND");
-        }
-
-
-//        Show show = map(id, request);
-//        repository.save(show);
-//
-//        return map(show);
-    }
-
-    public void deleteShow(Integer id) {
+    public void deleteShow(Long id) {
         repository.deleteById(id);
     }
 
+    //////////
     private ShowDTO map(Show in) {
-        return new ShowDTO(in.getId(), in.getName(), in.getDescription(), in.getDate());
+        ShowDTO show = MyMapper.toShowDto(in);
+        show.setLikes(in.getLikes().stream().map(MyMapper::toUserDto).toList());
+        show.setScreenings(in.getScreenings().stream().map(MyMapper::toScreeningDto).toList());
+
+        return show;
     }
 
-    private Show map(RegisterShowDTO in) {
-        return new Show(in.getName(), in.getDescription());
-    }
+    //////////
+//    public ShowDTO updateShow(Integer id, UpdateShowDTO request) {
+//        Optional<Show> show = repository.findById(id);
+//
+//        if (show.isPresent()) {
+//            merge(show.get(), request);
+//            repository.save(show.get());
+//
+//            return map(show.get());
+//        } else {
+//            throw new RuntimeException("NOT FOUND");
+//        }
+//
+//
+////        Show show = map(id, request);
+////        repository.save(show);
+////
+////        return map(show);
+//    }
 
-    private Show map(Integer id, UpdateShowDTO in) {
-        return new Show(id, in.getName(), in.getDescription());
-    }
-
-    private void merge(Show show, UpdateShowDTO in) {
-        if (in.getName() != null)
-            show.setName(in.getName());
-        if (in.getDescription() != null)
-            show.setDescription(in.getDescription());
-    }
+//    private Show map(Integer id, UpdateShowDTO in) {
+//        return new Show(id, in.getName(), in.getDescription());
+//    }
+//
+//    private void merge(Show show, UpdateShowDTO in) {
+//        if (in.getName() != null)
+//            show.setName(in.getName());
+//        if (in.getDescription() != null)
+//            show.setDescription(in.getDescription());
+//    }
 }

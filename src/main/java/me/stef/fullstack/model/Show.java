@@ -2,53 +2,68 @@ package me.stef.fullstack.model;
 
 import jakarta.persistence.*;
 
-import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "shows")
+@Table(name = "SHOWS")
 public class Show {
 
     @Id
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "TITLE", length = 50, nullable = false)
+    private String title;
 
-    @Column(name = "descr")
+    @Column(name = "DESCRIPTION", length = 512)
     private String description;
 
-    @Column(name = "dt")
-    private Instant date;
+    @Column(name = "DURATION")
+    private String duration;
+
+    @Column(name = "DIRECTOR", length = 50)
+    private String director;
+
+    @Column(name = "GENRE")
+    private String genre;
+
+    @Column(name = "LANGUAGE")
+    private String language;
+
+    @ManyToMany(mappedBy = "likedShows")
+    private List<User> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "show")
+    private List<Screening> screenings = new ArrayList<>();
 
     public Show() {
     }
 
-    public Show(String name, String description) {
-        this.name = name;
+    public Show(String title, String description, String duration, String director, String genre, String language) {
+        this.title = title;
         this.description = description;
+        this.duration = duration;
+        this.director = director;
+        this.genre = genre;
+        this.language = language;
     }
 
-    public Show(Integer id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-    }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -59,11 +74,51 @@ public class Show {
         this.description = description;
     }
 
-    public Instant getDate() {
-        return date;
+    public String getDuration() {
+        return duration;
     }
 
-    public void setDate(Instant date) {
-        this.date = date;
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public List<User> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<User> likes) {
+        this.likes = likes;
+    }
+
+    public List<Screening> getScreenings() {
+        return screenings;
+    }
+
+    public void setScreenings(List<Screening> screenings) {
+        this.screenings = screenings;
     }
 }
