@@ -18,7 +18,7 @@ public class ShowViewController {
     @GetMapping("/shows")
     public String getShows(Model model) {
         List<ShowDTO> shows = service.getShows();
-        model.addAttribute("stef", shows);
+        model.addAttribute("shows", shows);
         return "shows";
     }
 

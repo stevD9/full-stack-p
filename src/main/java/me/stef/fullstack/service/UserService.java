@@ -1,9 +1,11 @@
 package me.stef.fullstack.service;
 
 import jakarta.transaction.Transactional;
+import me.stef.fullstack.dao.ReservationRepository;
 import me.stef.fullstack.dao.ShowRepository;
 import me.stef.fullstack.dao.UserRepository;
 import me.stef.fullstack.dto.RegisterUserDTO;
+import me.stef.fullstack.dto.ScreeningDTO;
 import me.stef.fullstack.dto.UserDTO;
 import me.stef.fullstack.mapper.MyMapper;
 import me.stef.fullstack.model.Show;
@@ -21,6 +23,9 @@ public class UserService {
 
     @Autowired
     private ShowRepository showRepository;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     public List<UserDTO> getUsers() {
         return userRepository.findAll()
@@ -50,6 +55,7 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+//        reservationRepository.deleteForUser(id); TODO WITH CASCADE
     }
 
     @Transactional
@@ -72,7 +78,12 @@ public class UserService {
                 .toList());
 
         response.setReservations(user.getReservations().stream()
-                .map(r -> MyMapper.toScreeningDto(r.getScreening()))
+                .map(r -> {
+                    ScreeningDTO screening = MyMapper.toScreeningDto(r.getScreening());
+                    screening.setShow(MyMapper.toShowDto(r.getScreening().getShow()));
+
+                    return screening;
+                })
                 .toList());
 
         return response;
