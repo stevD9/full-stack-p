@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import me.stef.fullstack.dto.RegisterUserDTO;
 import me.stef.fullstack.dto.UserDTO;
 import me.stef.fullstack.service.UserService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,10 +29,10 @@ public class UserRestController {
         return service.getUsers();
     }
 
-    @GetMapping("/{id}") // here we will also have one that works with session id
+    @GetMapping("/profile") // here we will also have one that works with session id
     public UserDTO getUser(
-            @PathVariable("id") Long id) {
-        return service.getUserById(id);
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return service.getUserByUsername(userDetails.getUsername());
     }
 
     @GetMapping("/username/{username}")
@@ -45,10 +47,10 @@ public class UserRestController {
         service.deleteUser(id);
     }
 
-    @PostMapping("/{id}/show/{showId}") // here we will also have one that works with session id and just pass the show id
+    @PostMapping("/show/{showId}/like") // here we will also have one that works with session id and just pass the show id
     public void likeShow(
-            @PathVariable("id") Long id,
+            @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable("showId") Long showId) {
-        service.likeShow(id, showId);
+        service.likeShow(userDetails.getUsername(), showId);
     }
 }

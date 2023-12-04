@@ -3,6 +3,8 @@ package me.stef.fullstack.controller.rest;
 import me.stef.fullstack.dto.ReservationDTO;
 import me.stef.fullstack.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,18 +16,18 @@ public class ReservationRestController {
     @Autowired
     private ReservationService service;
 
-    @PostMapping("/users/{userId}/screening/{screeningId}") // here we will also have one that works with session id and just pass the screening id
+    @PostMapping("/screening/{screeningId}") // here we will also have one that works with session id and just pass the screening id
     public ReservationDTO registerReservation(
-            @PathVariable("userId") Long userId,
+            @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable("screeningId") Long screeningId) {
-        return service.save(userId, screeningId);
+        return service.save(userDetails.getUsername(), screeningId);
     }
 
-    @GetMapping("/users/{userId}/screening/{screeningId}") // here we will also have one that works with session id and just pass the screening id
+    @GetMapping("/screening/{screeningId}") // here we will also have one that works with session id and just pass the screening id
     public ReservationDTO getReservations(
-            @PathVariable("userId") Long userId,
+            @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable("screeningId") Long screeningId) {
-        return service.getById(userId, screeningId);
+        return service.getById(userDetails.getUsername(), screeningId);
     }
 
     @GetMapping("")
@@ -33,10 +35,10 @@ public class ReservationRestController {
         return service.getReservations();
     }
 
-    @GetMapping("/users/{userId}") // here we will also have one that works with session id
+    @GetMapping("/users") // here we will also have one that works with session id
     public List<ReservationDTO> getReservations(
-            @PathVariable("userId") Long userId) {
-        return service.getReservationsForUser(userId);
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return service.getReservationsForUser(userDetails.getUsername());
     }
 
     @DeleteMapping("/users/{userId}/screening/{screeningId}")

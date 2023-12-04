@@ -1,7 +1,6 @@
 package me.stef.fullstack.service;
 
 import jakarta.transaction.Transactional;
-import me.stef.fullstack.dao.ReservationRepository;
 import me.stef.fullstack.dao.ShowRepository;
 import me.stef.fullstack.dao.UserRepository;
 import me.stef.fullstack.dto.RegisterUserDTO;
@@ -11,6 +10,7 @@ import me.stef.fullstack.mapper.MyMapper;
 import me.stef.fullstack.model.Show;
 import me.stef.fullstack.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class UserService {
     private ShowRepository showRepository;
 
     @Autowired
-    private ReservationRepository reservationRepository;
+    private PasswordEncoder passwordEncoder;
 
     public List<UserDTO> getUsers() {
         return userRepository.findAll()
@@ -36,6 +36,7 @@ public class UserService {
 
     public UserDTO saveUser(RegisterUserDTO request) {
         User user = MyMapper.toUser(request);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
         return map(user);
@@ -55,12 +56,11 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
-//        reservationRepository.deleteForUser(id); TODO WITH CASCADE
     }
 
     @Transactional
-    public void likeShow(Long userId, Long showId) {
-        User user = userRepository.findById(userId)
+    public void likeShow(String username, Long showId) {
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Not found"));
 
         Show show = showRepository.findById(showId)

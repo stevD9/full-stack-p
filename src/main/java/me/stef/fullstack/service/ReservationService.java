@@ -26,8 +26,8 @@ public class ReservationService {
     @Autowired
     private ScreeningRepository screeningRepository;
 
-    public ReservationDTO save(Long userId, Long screeningId) {
-        User user = userRepository.findById(userId)
+    public ReservationDTO save(String username, Long screeningId) {
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Not found"));
 
         Screening screening = screeningRepository.findById(screeningId)
@@ -45,16 +45,17 @@ public class ReservationService {
                 .toList();
     }
 
-    public ReservationDTO getById(Long userId, Long screeningId) {
-        return reservationRepository.findById(new ReservationId(userId, screeningId))
+    public ReservationDTO getById(String username, Long screeningId) {
+        return userRepository.findByUsername(username)
+                .flatMap(u -> u.getReservations().stream().filter(r -> r.getId().equals(new ReservationId(u.getId(), screeningId))).findFirst())
                 .map(MyMapper::toReservationDto)
                 .orElseThrow(() -> new RuntimeException("Not found"));
     }
 
-    public List<ReservationDTO> getReservationsForUser(Long userId) {
-        return reservationRepository.findForUser(userId).stream()
-                .map(MyMapper::toReservationDto)
-                .toList();
+    public List<ReservationDTO> getReservationsForUser(String username) {
+        return userRepository.findByUsername(username)
+                .map(u -> u.getReservations().stream().map(MyMapper::toReservationDto).toList())
+                .orElseThrow(() -> new RuntimeException("Not found"));
     }
 
     public void delete(Long userId, Long screeningId) {
