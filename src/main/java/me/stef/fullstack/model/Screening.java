@@ -25,7 +25,7 @@ public class Screening {
     @JoinColumn(name = "SHOW_ID", nullable = false)
     private Show show;
 
-    @OneToMany(mappedBy = "screening")
+    @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
     private List<Reservation> reservations = new ArrayList<>();
 
     public Screening() {

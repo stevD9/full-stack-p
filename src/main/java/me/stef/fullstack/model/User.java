@@ -30,7 +30,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "SHOW_ID"))
     private List<Show> likedShows = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Reservation> reservations = new ArrayList<>();
 
     public User() {

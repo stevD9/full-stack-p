@@ -35,7 +35,7 @@ public class Show {
     @ManyToMany(mappedBy = "likedShows")
     private List<User> likes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "show")
+    @OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
     private List<Screening> screenings = new ArrayList<>();
 
     public Show() {
